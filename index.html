@@ -1,51 +1,256 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda en Línea</title>
-    <link rel="stylesheet" href="style.css">
+    <title>TechStore - Tu Tienda de Tecnología</title>
+    <!-- Tailwind CSS para un diseño profesional instantáneo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animaciones suaves para el carrito y notificaciones */
+        .cart-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1>Mi Tienda</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Productos</a></li>
-                <li><a href="#">Carrito</a></li>
-            </ul>
-        </nav>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <!-- Navegación -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="bg-indigo-600 p-1.5 rounded-lg">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900 tracking-tight">TechStore</span>
+                </div>
+                
+                <div class="relative">
+                    <button id="cartIcon" onclick="toggleCart()" class="p-2 text-gray-600 hover:text-indigo-600 transition-colors relative">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span id="cartCount" class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-indigo-700 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                    Equípate con lo <br><span class="text-indigo-300">mejor de la tecnología</span>
+                </h1>
+                <p class="text-lg text-indigo-100 mb-8 max-w-lg">
+                    Calidad garantizada, envíos rápidos y el soporte técnico que necesitas. Explora nuestra selección premium hoy mismo.
+                </p>
+                <button onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})" class="bg-white text-indigo-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-indigo-50 transition-all transform hover:scale-105">
+                    Ver Catálogo
+                </button>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="[Image of Laptop tecnológica]" class="rounded-2xl shadow-2xl">
+            </div>
+        </div>
     </header>
 
-    <main>
-        <section class="productos">
-            <div class="producto-caja">
-                <img src="1.jpeg" alt="Producto 1">
-                <h2>Producto 1</h2>
-                <p>$100.00</p>
-                <button>Comprar</button>
-            </div>
-            
-            <div class="producto-caja">
-                <img src="2.jpeg" alt="Producto 2">
-                <h2>Producto 2</h2>
-                <p>$200.00</p>
-                <button>Comprar</button>
-            </div>
-            
-            <div class="producto-caja">
-                <img src="3.jpeg" alt="Producto 3">
-                <h2>Producto 3</h2>
-                <p>$300.00</p>
-                <button>Comprar</button>
-            </div>
-        </section>
+    <!-- Catálogo de Productos -->
+    <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-10 border-b-2 border-indigo-200 pb-4 inline-block">Nuestros Productos</h2>
+        
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Cargado por JS -->
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Mi Tienda</p>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="mb-4 text-white font-bold">TechStore 2026</p>
+            <p class="text-sm">Las mejores ofertas en tecnología de consumo.</p>
+        </div>
     </footer>
+
+    <!-- Overlay del Carrito (Modal lateral) -->
+    <div id="cartSidebar" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col cart-transition">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h3 class="text-xl font-bold text-gray-900">Tu Carrito</h3>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            
+            <div id="cartItems" class="flex-grow overflow-y-auto p-6 space-y-4">
+                <!-- Items del carrito -->
+                <p id="emptyCartMsg" class="text-center text-gray-500 mt-10 italic">El carrito está vacío</p>
+            </div>
+
+            <div class="p-6 border-t bg-gray-50">
+                <div class="flex justify-between items-center mb-6 text-xl font-bold">
+                    <span>Total:</span>
+                    <span id="cartTotal" class="text-indigo-600">$0.00</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition-colors shadow-lg">
+                    Finalizar Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificaciones (Toast) -->
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-[200] hidden">
+        <div class="bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span id="toastMsg">Producto añadido</span>
+        </div>
+    </div>
+
+    <script>
+        // Datos de productos
+        const products = [
+            { id: 1, name: 'Smartwatch Pro X', price: 159.00, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80', category: 'Wearables' },
+            { id: 2, name: 'Auriculares Noise-Cancelling', price: 299.00, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80', category: 'Audio' },
+            { id: 3, name: 'Teclado Mecánico RGB', price: 89.99, image: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=500&q=80', category: 'Gaming' },
+            { id: 4, name: 'Cámara Mirrorless 4K', price: 850.00, image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=500&q=80', category: 'Fotografía' },
+            { id: 5, name: 'Mouse Gamer Inalámbrico', price: 65.00, image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=500&q=80', category: 'Periféricos' },
+            { id: 6, name: 'Lámpara de Escritorio LED', price: 45.00, image: 'https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&w=500&q=80', category: 'Oficina' },
+            { id: 7, name: 'Mochila Tech Impermeable', price: 75.00, image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=80', category: 'Accesorios' },
+            { id: 8, name: 'Set de Lentes para Smartphone', price: 35.00, image: 'https://images.unsplash.com/photo-1617033934812-eb79e96536d4?auto=format&fit=crop&w=500&q=80', category: 'Fotografía' }
+        ];
+
+        let cart = [];
+
+        // Inicializar productos en pantalla
+        function init() {
+            const grid = document.getElementById('productGrid');
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden animate-fade-in group">
+                        <div class="relative overflow-hidden h-48 bg-gray-200">
+                            <img src="${p.image}" alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider">${p.category}</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-gray-900 mb-2 truncate">${p.name}</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-black text-indigo-600">$${p.price.toFixed(2)}</span>
+                                <button onclick="addToCart(${p.id})" class="bg-gray-100 hover:bg-indigo-600 hover:text-white text-indigo-600 p-2.5 rounded-xl transition-all">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Funciones del Carrito
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.classList.toggle('hidden');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const inCart = cart.find(item => item.id === id);
+
+            if (inCart) {
+                inCart.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            renderCart();
+            showToast(`¡${product.name} añadido!`);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const totalEl = document.getElementById('cartTotal');
+            const countEl = document.getElementById('cartCount');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+
+            container.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            if (cart.length === 0) {
+                container.appendChild(emptyMsg);
+                emptyMsg.classList.remove('hidden');
+            } else {
+                emptyMsg.classList.add('hidden');
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    count += item.quantity;
+
+                    container.innerHTML += `
+                        <div class="flex items-center gap-4 bg-gray-50 p-3 rounded-xl">
+                            <img src="${item.image}" class="w-16 h-16 object-cover rounded-lg border">
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-gray-900 text-sm">${item.name}</h4>
+                                <p class="text-indigo-600 font-bold text-sm">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+
+            totalEl.textContent = `$${total.toFixed(2)}`;
+            countEl.textContent = count;
+            countEl.style.display = count > 0 ? 'block' : 'none';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('hidden');
+            toast.classList.add('animate-fade-in');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Añade algo primero');
+                return;
+            }
+            alert('¡Gracias por tu compra! (Simulación de pago completada)');
+            cart = [];
+            renderCart();
+            toggleCart();
+        }
+
+        // Arrancar
+        window.onload = init;
+    </script>
 </body>
 </html>
